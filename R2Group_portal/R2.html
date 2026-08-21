@@ -1,0 +1,405 @@
+<?php
+session_start();
+if(!isset($_SESSION['Password'])){
+	header("location:Admin.php");
+}
+$con = mysqli_connect("localhost","root","","webcode")or die("The connection to the database has not been made");
+
+$useradmin = $_SESSION['Password'];
+$get_user = "select * from master_admin where Password='$useradmin'"; 
+$run_user = mysqli_query($con, $get_user);
+$row=mysqli_fetch_array($run_user);
+					
+$user_id = $row['id']; 
+$first_name = $row['F_name'];
+$last_name = $row['L_name'];
+$user_image = $row['Master_Image'];
+?>
+<!DOCTYPE html>
+<html>
+<title>R2 Group Portal</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="Aldwin.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif;}
+body{color:white;background: linear-gradient(#000000,#8f8ed6,#000000);}
+.R2_cover{width:50%;}
+@media (max-width:600px){.R2_cover{width:100%;}}
+* {cursor: url(cur641.cur), auto !important;} 
+.slideshow
+{
+    margin: 0 auto;
+    height: 350px;
+    box-sizing: border-box;
+    width: 100%;
+	
+}
+.container
+{
+	margin: auto;
+	width: 190px;
+	perspective: 1000px;
+	position: relative;
+	padding-top: 50px;
+}
+.content-carrousel
+{
+	width: 100%;
+	position: absolute;
+	float: right;
+	animation: rotar 15s infinite linear;
+	transform-style: preserve-3d;
+}
+.content-carrousel:hover
+{
+	animation-play-state: paused;
+	cursor: pointer;
+}
+.content-carrousel figure
+{
+    height: 170px;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+}
+.content-carrousel figure:nth-child(1)
+{
+	transform:rotateY(-70deg) translateZ(250px);
+}
+.content-carrousel figure:nth-child(2)
+{
+	transform:rotateY(-10deg) translateZ(250px);
+}
+.content-carrousel figure:nth-child(3)
+{
+	transform:rotateY(50deg) translateZ(250px);
+}
+.content-carrousel figure:nth-child(4)
+{
+	transform:rotateY(110deg) translateZ(250px);
+}
+.content-carrousel figure:nth-child(5)
+{
+	transform:rotateY(170deg) translateZ(250px);
+}
+.content-carrousel figure:nth-child(6)
+{
+	transform:rotateY(230deg) translateZ(250px);
+}
+
+.shadow
+{
+	position: absolute;
+}
+.content-carrousel img
+{
+	image-rendering: auto;
+	transition:all 300ms;
+	width: 100%;
+	height: 100%;
+}
+.content-carrousel img:hover
+{
+	transform:scale(1.2);
+	transition:all 300ms;
+}
+@keyframes rotar
+{
+	from
+	{
+		transform:rotateY(0deg);
+	}
+	to
+	{
+		transform: rotateY(360deg);
+	}
+}
+a{
+  cursor: url(cur638.cur), auto !important;
+
+}
+</style>
+<body>
+
+<!-- Top container -->
+<div class="Aldwin-bar Aldwin-top Aldwin-white Aldwin-border-bottom Aldwin-large" style="z-index:4">
+<button class="Aldwin-bar-item Aldwin-button Aldwin-hide-large Aldwin-hover-none Aldwin-hover-text-light-grey" onclick="Aldwin_open();"><i class="fa fa-bars"></i></button>
+<a href="adminlogout.php" class="Aldwin-bar-item Aldwin-button Aldwin-right"> <i class="fa fa-sign-out"></i></a>
+<a href="#home" class="Aldwin-bar-item"><img src="R2_logo.jpg"></a>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="Aldwin-sidebar Aldwin-collapse Aldwin-white Aldwin-animate-left" style="z-index:3;width:300px;background:linear-gradient(white,#ffeded,#ecebec,#7e76b9,#8585b3)" id="mySidebar"><br>
+  <div class="Aldwin-container Aldwin-row">
+    <div class="Aldwin-col s4">
+      <img src="anonymous1.png" class="Aldwin-circle Aldwin-margin-right" style="width:70px;height:70px;">
+    </div>
+    <div class="Aldwin-col s8 Aldwin-bar">
+      <span>Welcome, <strong>Aldwin</strong></span><br>
+      <a href="#" class="Aldwin-bar-item Aldwin-button"><i class="fa fa-envelope"></i></a>
+      <a href="#" class="Aldwin-bar-item Aldwin-button"><i class="fa fa-user"></i></a>
+      <a href="#" class="Aldwin-bar-item Aldwin-button"><i class="fa fa-cog"></i></a>
+    </div>
+	
+  </div>
+  <hr>
+  <div class="Aldwin-container">
+    <h5>Dashboard</h5>
+  </div>
+  <div class="Aldwin-bar-block">
+    <a href="#" class="Aldwin-bar-item Aldwin-button Aldwin-padding-16 Aldwin-hide-large Aldwin-dark-grey Aldwin-hover-black" onclick="Aldwin_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+    <a onclick="openside(event, 'Overview')" class="Aldwin-bar-item Aldwin-button Aldwin-padding"><i class="fa fa-th-list fa-fw"></i>  &nbsp Overview</a>
+	<a onclick="openside(event, 'Overview')" class="Aldwin-bar-item Aldwin-button Aldwin-padding point_tab"><i class="fa fa-user  fa-fw"></i>&nbsp  Profile</a>
+	<a href="#" class="Aldwin-bar-item Aldwin-button Aldwin-padding"><i class="fas fa-coins fa-fw"></i> &nbsp Salary</a>
+	<a href="#" class="Aldwin-bar-item Aldwin-button Aldwin-padding"><i class="fa fa-money fa-fw"></i> &nbsp Cash Advance</a>
+	<a href="#" class="Aldwin-bar-item Aldwin-button Aldwin-padding"><i class="fa fa-calendar-check-o fa-fw"></i> &nbsp Schedule</a>
+	<a href="#" class="Aldwin-bar-item Aldwin-button Aldwin-padding"><i class="fas fa-chalkboard-teacher fa-fw"></i> &nbsp Attendance</a>
+    <a href="#" class="Aldwin-bar-item Aldwin-button Aldwin-padding"><i class="fa fa-users fa-fw"></i> &nbsp All Employers</a>
+    <a href="#" class="Aldwin-bar-item Aldwin-button Aldwin-padding"><i class="fa fa-bell fa-fw"></i> &nbsp News</a>
+    <a href="#" class="Aldwin-bar-item Aldwin-button Aldwin-padding"><i class="fa fa-bank fa-fw"></i> &nbsp General</a>
+    <a href="#" class="Aldwin-bar-item Aldwin-button Aldwin-padding"><i class="fa fa-history fa-fw"></i> &nbsp History</a>
+    <a href="#" class="Aldwin-bar-item Aldwin-button Aldwin-padding"><i class="fa fa-cog fa-fw"></i> &nbsp Settings</a><br><br>
+  </div>
+</nav>
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="Aldwin-overlay Aldwin-hide-large Aldwin-animate-opacity" onclick="Aldwin_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="Aldwin-main" style="margin-left:300px;margin-top:43px;">
+ <div id="Overview" class="Aldwin-container side">
+<!-- Header -->
+<header class="Aldwin-container Aldwin-animate-top" style="padding-top:22px">
+<div class="Aldwin-center">
+<a href="#" class="Aldwin-bar-item Aldwin-button">Home</a>
+<a href="#" class="Aldwin-bar-item Aldwin-button">Policies</a>
+<a href="#" class="Aldwin-bar-item Aldwin-button">Forms</a>
+<a href="#" class="Aldwin-bar-item Aldwin-button">Organization Chart</a>
+<a href="#" class="Aldwin-bar-item Aldwin-button">Contact</a>
+</div>
+<center><hr style="width:50%;"></center>
+<h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
+</header>
+
+<div class="Aldwin-row-padding Aldwin-margin-bottom Aldwin-animate-top">
+<div class="Aldwin-quarter">
+<div class="Aldwin-container Aldwin-red Aldwin-padding-16">
+<div class="Aldwin-left"><i class="fa fa-comment Aldwin-xxxlarge"></i></div>
+<div class="Aldwin-right">
+<h3>52</h3>
+</div>
+<div class="Aldwin-clear"></div>
+<h4>Messages</h4>
+</div>
+</div>
+<div class="Aldwin-quarter">
+<div class="Aldwin-container Aldwin-blue Aldwin-padding-16">
+<div class="Aldwin-left"><i class="fa fa-money Aldwin-xxxlarge"></i></div>
+<div class="Aldwin-right">
+<h3>x5</h3>
+</div>
+<div class="Aldwin-clear"></div>
+<h4>Cash Advance</h4>
+</div>
+</div>
+
+<div class="Aldwin-quarter">
+<div class="Aldwin-container Aldwin-teal Aldwin-padding-16">
+<div class="Aldwin-left"><i class="fas fa-coins Aldwin-xxxlarge"></i></div>
+<div class="Aldwin-right">
+<h3>&#x20B1; 30,000.00</h3>
+</div>
+<div class="Aldwin-clear"></div>
+<h4>Salary</h4>
+</div>
+</div>
+
+<div class="Aldwin-quarter">
+<div class="Aldwin-container Aldwin-orange Aldwin-text-white Aldwin-padding-16">
+<div class="Aldwin-left"><i class="fa fa-users Aldwin-xxxlarge"></i></div>
+<div class="Aldwin-right">
+<h3>50</h3>
+</div>
+<div class="Aldwin-clear"></div>
+<h4>Employers</h4>
+</div>
+</div>
+</div>
+
+<div class="Aldwin-panel Aldwin-hide-small">
+<div class="Aldwin-row-padding" style="margin:0 -16px">
+<div class="Aldwin-third">
+<h5>Locations</h5>
+<img src="location.png" style="width:100%" alt="Google Regional Map">
+</div> 
+<div class="Aldwin-twothird">
+<div class="Aldwin-container">
+<section class="slideshow">
+<div class="container">
+<div class="content-carrousel">
+<figure class="shadow"><img src="nail.jpg"></figure>
+<figure class="shadow"><img src="vivere.png"></figure>
+<figure class="shadow"><img src="french.png"></figure>
+<figure class="shadow"><img src="barber.png"></figure>
+<figure class="shadow"><img src="sugar.png"></figure>
+<figure class="shadow"><img src="max.png"></figure>
+
+</div>			
+</div>
+</section>	
+</div>
+</div>
+</div>
+</div>
+<hr>
+
+
+<div class="Aldwin-container">
+<h5>Top Branch Stats</h5>
+<p>Brancs 1</p>
+<div class="Aldwin-grey">
+<div class="Aldwin-container Aldwin-center Aldwin-padding Aldwin-green" style="width:25%">+25%</div>
+</div>
+
+<p>Brancs 2</p>
+<div class="Aldwin-grey">
+<div class="Aldwin-container Aldwin-center Aldwin-padding Aldwin-orange" style="width:50%">50%</div>
+</div>
+
+<p>Brancs 3</p>
+<div class="Aldwin-grey">
+<div class="Aldwin-container Aldwin-center Aldwin-padding Aldwin-red" style="width:75%">75%</div>
+</div>
+<h5>Other Branch Stats</h5>
+<table class="Aldwin-table Aldwin-striped Aldwin-bordered Aldwin-border Aldwin-hoverable Aldwin-white">
+<tr>
+<td>Brancs 4</td>
+<td>6.5%</td>
+</tr>
+<tr>
+<td>Brancs 5</td>
+<td>15.7%</td>
+</tr>
+<tr>
+<td>Brancs 6</td>
+<td>5.6%</td>
+</tr>
+<tr>
+<td>Brancs 7</td>
+<td>2.1%</td>
+</tr>
+<tr>
+<td>Brancs 8</td>
+<td>1.9%</td>
+</tr>
+<tr>
+<td>Brancs 9</td>
+<td>1.5%</td>
+</tr>
+</table><br>
+<button class="Aldwin-button Aldwin-dark-grey">More Countries  <i class="fa fa-arrow-right"></i></button>
+</div>
+<hr>
+
+<div class="Aldwin-container">
+<h5>Recent Comments</h5>
+<div class="Aldwin-row">
+<div class="Aldwin-col m2 text-center">
+<img class="Aldwin-circle" src="anonymous1.png" style="width:96px;height:96px">
+</div>
+<div class="Aldwin-col m10 Aldwin-container">
+<h4>Aldwin <span class="Aldwin-opacity Aldwin-medium">Sep 29, 2014, 9:12 PM</span></h4>
+<p>Keep up the GREAT work! I am cheering for you!!</p><br>
+</div>
+</div>
+
+<div class="Aldwin-row">
+<div class="Aldwin-col m2 text-center">
+<img class="Aldwin-circle" src="anonymous1.png" style="width:96px;height:96px">
+</div>
+<div class="Aldwin-col m10 Aldwin-container">
+<h4>Aldwin <span class="Aldwin-opacity Aldwin-medium">Sep 28, 2014, 10:15 PM</span></h4>
+<p>Keep up the GREAT work! I am cheering for you!!</p><br>
+</div>
+</div>
+</div>
+<br>
+
+<div class="Aldwin-container Aldwin-dark-grey Aldwin-padding-32">
+<div class="Aldwin-row">
+
+<div class="Aldwin-container Aldwin-third">
+<h5 class="Aldwin-bottombar Aldwin-border-green">Company</h5>
+<p>{Text}</p>
+<p>{Text}</p>
+<p>{Text}</p>
+</div>
+
+<div class="Aldwin-container Aldwin-third">
+<h5 class="Aldwin-bottombar Aldwin-border-red">Employer</h5>
+<p>{Text}</p>
+<p>{Text}</p>
+<p>{Text}</p>
+</div>
+
+<div class="Aldwin-container Aldwin-third">
+<h5 class="Aldwin-bottombar Aldwin-border-orange">Client</h5>
+<p>{Text}</p>
+<p>{Text}</p>
+<p>{Text}</p>
+<p>{Text}</p>
+</div>
+
+</div>
+</div>
+
+  <!-- Footer -->
+<footer class="Aldwin-container Aldwin-padding-16 Aldwin-white">
+<center><img class="R2_cover" src="ground.jpg"></center>
+</footer>
+
+  <!-- End page content -->
+</div>
+</div>
+<script>
+var mySidebar = document.getElementById("mySidebar");
+var overlayBg = document.getElementById("myOverlay");
+
+function Aldwin_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function Aldwin_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+</script>
+<script>
+function openside(evt, sideName) {
+  var i, x, point_tabs;
+  x = document.getElementsByClassName("side");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  point_tabs = document.getElementsByClassName("point_tab");
+  for (i = 0; i < x.length; i++) {
+    point_tabs[i].className = point_tabs[i].className.replace(" Aldwin-red", ""); 
+  }
+  document.getElementById(sideName).style.display = "block";
+  evt.currentTarget.className += " Aldwin-red";
+}
+</script>
+</body>
+</html>
